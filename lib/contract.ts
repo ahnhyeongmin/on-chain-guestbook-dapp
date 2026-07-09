@@ -9,44 +9,95 @@ import type { Abi } from 'viem'
  *   - function getEntries() view returns (Entry[])
  *   where Entry = { address author; string message; uint256 timestamp }
  */
-export const GUESTBOOK_ADDRESS =
-  '0x0000000000000000000000000000000000000000' as const
+export const GUESTBOOK_ADDRESS = '0x2f205d0C7be5E5Be55D517753eBEf37f42e1F902' as const
 
+// 컨트랙트 ABI
+//  -sign(string message): 방명록 작성
+//  -getEntries(): 작성된 방명록 목록 조회 
 export const GUESTBOOK_ABI = [
   {
-    type: 'function',
-    name: 'sign',
-    stateMutability: 'nonpayable',
-    inputs: [{ name: 'message', type: 'string' }],
-    outputs: [],
-  },
-  {
-    type: 'function',
-    name: 'getEntries',
-    stateMutability: 'view',
-    inputs: [],
-    outputs: [
+    "anonymous": false,
+    "inputs": [
       {
-        name: '',
-        type: 'tuple[]',
-        components: [
-          { name: 'author', type: 'address' },
-          { name: 'message', type: 'string' },
-          { name: 'timestamp', type: 'uint256' },
-        ],
+        "indexed": true,
+        "internalType": "address",
+        "name": "author",
+        "type": "address"
       },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "message",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "timestamp",
+        "type": "uint256"
+      }
     ],
+    "name": "NewEntry",
+    "type": "event"
   },
   {
-    type: 'event',
-    name: 'Signed',
-    inputs: [
-      { name: 'author', type: 'address', indexed: true },
-      { name: 'message', type: 'string', indexed: false },
-      { name: 'timestamp', type: 'uint256', indexed: false },
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "message",
+        "type": "string"
+      }
     ],
+    "name": "sign",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
-] as const satisfies Abi
+  {
+    "inputs": [],
+    "name": "getEntries",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "author",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "message",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "timestamp",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct Guestbook.Entry[]",
+        "name": "",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "total",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]
+as const satisfies Abi
 
 /** Shape of a single guestbook entry returned by getEntries(). */
 export type GuestbookEntry = {
