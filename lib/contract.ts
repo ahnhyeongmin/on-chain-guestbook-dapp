@@ -96,8 +96,7 @@ export const GUESTBOOK_ABI = [
     "stateMutability": "view",
     "type": "function"
   }
-]
-as const satisfies Abi
+] as const satisfies Abi
 
 /** Shape of a single guestbook entry returned by getEntries(). */
 export type GuestbookEntry = {
